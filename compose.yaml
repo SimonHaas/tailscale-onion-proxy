@@ -1,0 +1,57 @@
+services:
+  tor:
+    image: dperson/torproxy
+    restart: unless-stopped
+    volumes:
+      - ./torrc:/etc/tor/torrc:ro
+    cap_add:
+      - NET_ADMIN
+    expose: # Expose the dns resolver and socks proxy
+      - 5353:5353
+      - 9050:9050
+    networks:
+      tor_net:
+        ipv4_address: 172.96.0.21
+  coredns:
+    image: coredns/coredns:latest
+    restart: unless-stopped
+    command: -conf /Corefile
+    volumes:
+      - ./Corefile:/Corefile:ro
+    expose: # Expose the dns resolver (which redirects to the tor dns resolver)
+      - 53:53
+    networks:
+      tor_net:
+        ipv4_address: 172.96.0.25
+    depends_on:
+      - tor
+  tailscale:
+    #image: tailscale/tailscale:latest
+    build: .
+    hostname: tor-exit-node
+    restart: unless-stopped
+    environment:
+      TS_AUTHKEY:
+      TS_EXTRA_ARGS: '--accept-dns=false --advertise-exit-node' # you can specify a custom headscale server as well
+      TS_STATE_DIR: /var/lib/tailscale
+    volumes:
+      - ./tailscale-data:/var/lib/tailscale
+      - ./redsocks.conf:/etc/redsocks.conf:ro
+      - ./post-rules.sh:/post-rules.sh:ro
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    networks:
+      tor_net:
+        ipv4_address: 172.96.0.22
+    dns: # Set the coredns container as dns resolver
+      - 172.96.0.25
+    depends_on:
+      - coredns
+networks:
+  tor_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.96.0.0/24

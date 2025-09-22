@@ -10,7 +10,13 @@ docker compose up -d
 After the first start you will see your tor-exit-node in tailnet under https://login.tailscale.com/admin/machines.
 Allow it to be an exit node https://tailscale.com/kb/1103/exit-nodes#allow-the-exit-node-from-the-admin-console.
 
-Copy the tailscale-internal-IP of your tor-exit-node and add it as TAILSCALE_IP to the .env file.
+Copy the tailscale-internal-IP of your tor-exit-node and add it as TAILSCALE_IP to the .env file and do a docker compose up -d again so the dns service will resolve domains to the new IP.
+
+``` bash
+docker compose up -d
+```
+
+Now you can use your new tor-exit-node!
 
 Browser actively block you from accessing .onion sites, to get around this we use .carrot.
 This should be totally transparent to the .onion site.

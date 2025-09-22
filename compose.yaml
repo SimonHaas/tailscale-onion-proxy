@@ -13,7 +13,7 @@ services:
       TS_AUTHKEY:
       TS_EXTRA_ARGS: '--accept-dns=false --advertise-exit-node'
       TS_STATE_DIR: /var/lib/tailscale
-      TS_HOSTNAME: tor-exit-node-github
+      TS_HOSTNAME:
     volumes:
       - tailscale-data:/var/lib/tailscale
       - /dev/net/tun:/dev/net/tun
@@ -28,14 +28,13 @@ services:
 
   dns:
     image: andyshinn/dnsmasq
-    container_name: dnsmasq
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
     command: >
       --no-resolv
       --server=1.1.1.1
-      --address=/.carrot/100.102.187.116
+      --address=/.carrot/${TAILSCALE_IP}
     ports:
       - "53:53/udp"
     networks:
@@ -44,11 +43,9 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: nginx
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     network_mode: "service:tailscale"
-    #networks:
 
 volumes:
   tailscale-data:

@@ -3,7 +3,7 @@
 This creates a tailscale-exit-node through which you can access the tor network.
 
 ``` bash
-nano .env # add an auth-key from tailscale and the tailscale ip of your new exit-node
+nano .env # add an auth-key from tailscale
 docker compose up -d
 ```
 
@@ -13,6 +13,7 @@ Allow it to be an exit node https://tailscale.com/kb/1103/exit-nodes#allow-the-e
 Copy the tailscale-internal-IP of your tor-exit-node and add it as TAILSCALE_IP to the .env file and do a docker compose up -d again so the dns service will resolve domains to the new IP.
 
 ``` bash
+nano .env # add the tailscale ip of your new exit-node
 docker compose up -d
 ```
 
@@ -22,6 +23,8 @@ Browser actively block you from accessing .onion sites, to get around this we us
 This should be totally transparent to the .onion site.
 
 You can test it by accessing my blog http://simonja4fdp3lxdjeis5qjuugqe3wtbstlr2w7gmzsrnhhkpctmbgead.carrot/blog
+
+Your browser might warn you that the connection is insecure because it is using http but do not worry, tor does not use https but everything is still encrypted and secure https://en.wikipedia.org/wiki/Onion_routing!
 
 ## Explanation
 

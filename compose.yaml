@@ -13,7 +13,7 @@ services:
       tor_net:
         ipv4_address: 172.96.0.21
   nginx:
-    image: nginx:alpine
+    build: ./dockerfiles/nginx
     restart: unless-stopped
     depends_on:
       - tor
@@ -38,14 +38,14 @@ services:
     depends_on:
       - tor
   tailscale:
-    #image: tailscale/tailscale:latest
-    build: .
+    build: ./dockerfiles/tailscale
     hostname: tor-exit-node
     restart: unless-stopped
     environment:
       TS_AUTHKEY:
       TS_EXTRA_ARGS: '--accept-dns=false --advertise-exit-node' # you can specify a custom headscale server as well
       TS_STATE_DIR: /var/lib/tailscale
+      TS_HOSTNAME: tor-exit-node-github
     volumes:
       - ./tailscale-data:/var/lib/tailscale
       - ./redsocks.conf:/etc/redsocks.conf:ro

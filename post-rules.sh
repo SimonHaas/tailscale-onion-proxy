@@ -5,7 +5,8 @@ redsocks -c /etc/redsocks.conf &
 
 # Allow local traffic
 iptables -t nat -A OUTPUT -d 127.0.0.1 -j RETURN        # local
-iptables -t nat -A OUTPUT -d 172.96.0.21 -j RETURN      # tor container
+#iptables -t nat -A OUTPUT -d 172.96.0.21 -j RETURN      # tor container
+iptables -t nat -A OUTPUT -d 172.96.0.30 -j RETURN      # nginx container
 iptables -t nat -A OUTPUT -d 172.96.0.25 -j RETURN      # coredns container
 #iptables -t nat -A OUTPUT -d <your-headscale-server> -j RETURN   # if you have a custom headscale server
 

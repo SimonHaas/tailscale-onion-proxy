@@ -11,7 +11,7 @@ services:
     restart: unless-stopped
     environment:
       TS_AUTHKEY:
-      TS_EXTRA_ARGS: '--accept-dns=false --advertise-exit-node'
+      TS_EXTRA_ARGS: '--accept-dns=false'
       TS_STATE_DIR: /var/lib/tailscale
       TS_HOSTNAME:
     volumes:
@@ -21,7 +21,7 @@ services:
       - NET_ADMIN
       - SYS_MODULE
     dns:
-      - 172.96.1.23
+      - 172.96.1.22
     networks:
       tor_net:
         ipv4_address: 172.96.1.22
@@ -35,11 +35,7 @@ services:
       --no-resolv
       --server=1.1.1.1
       --address=/.carrot/${TAILSCALE_IP}
-    ports:
-      - "53:53/udp"
-    networks:
-      tor_net:
-        ipv4_address: 172.96.1.23
+    network_mode: "service:tailscale"
 
   nginx:
     image: nginx:alpine

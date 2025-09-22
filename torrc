@@ -1,6 +1,0 @@
-VirtualAddrNetworkIPv4 255.0.0.0/8
-AutomapHostsOnResolve 1
-AutomapHostsSuffixes .onion
-
-DNSPort 172.96.0.21:5353    # Bind onto the container IP address
-SocksPort 172.96.0.21:9050

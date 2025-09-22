@@ -13,7 +13,7 @@ Allow it to be an exit node https://tailscale.com/kb/1103/exit-nodes#allow-the-e
 Copy the tailscale-internal-IP of your tor-exit-node and add it as TAILSCALE_IP to the .env file.
 
 Browser actively block you from accessing .onion sites, to get around this we use .carrot.
-But the server running the hidden service must also respond to other domains then just .onion for this to work.
+This should be totally transparent to the .onion site.
 
 You can test it by accessing my blog http://simonja4fdp3lxdjeis5qjuugqe3wtbstlr2w7gmzsrnhhkpctmbgead.carrot/blog
 

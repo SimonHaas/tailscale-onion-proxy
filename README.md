@@ -20,6 +20,7 @@ docker compose up -d
 Override your DNS server in tailscale to use your newly created node as a dns server for the carrot-domain https://tailscale.com/kb/1054/dns#override-dns-servers.
 
 ![Tailscale DNS Settings](tailscale-dns-settings.png)
+
 https://login.tailscale.com/admin/dns
 
 Now you can use your new tor-proxy!

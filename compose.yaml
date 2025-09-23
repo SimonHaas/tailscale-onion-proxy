@@ -27,7 +27,8 @@ services:
         ipv4_address: 172.96.1.22
 
   dns:
-    image: andyshinn/dnsmasq
+    #image: andyshinn/dnsmasq # no arm
+    image: drpayyne/docker-dnsmasq-multi-arch # multiarch
     restart: unless-stopped
     cap_add:
       - NET_ADMIN

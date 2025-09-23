@@ -28,7 +28,8 @@ services:
 
   dns:
     #image: andyshinn/dnsmasq # no arm
-    image: drpayyne/docker-dnsmasq-multi-arch # multiarch
+    #image: drpayyne/docker-dnsmasq-multi-arch # multiarch - did not work though
+    image: joweisberg/dnsmasq
     restart: unless-stopped
     cap_add:
       - NET_ADMIN

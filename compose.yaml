@@ -40,9 +40,12 @@ services:
   nginx:
     image: nginx:alpine
     restart: unless-stopped
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    #volumes:
+    #  - ./nginx.conf:/etc/nginx/nginx.conf:ro
     network_mode: "service:tailscale"
+    configs:
+      - source: nginx
+        target: /etc/nginx/nginx.conf
 
 volumes:
   tailscale-data:
@@ -53,3 +56,34 @@ networks:
     ipam:
       config:
         - subnet: 172.96.1.0/24
+
+configs:
+  nginx:
+    content: |
+      events {}
+
+      http {
+          resolver 127.0.0.11 ipv6=off;
+
+          server {
+              listen 80;
+
+              server_name ~^(?<name>.+)\.carrot$;
+
+              location / {
+                  proxy_pass http://tor:8118;
+                  proxy_set_header Host $name.onion;
+
+                  # Make sure we can modify the response
+                  proxy_set_header Accept-Encoding "";
+
+                  # Rewrite headers
+                  proxy_redirect ~^http://(.+)\.onion(.*)$ http://$1.carrot$2;
+
+                  # Rewrite body content
+                  sub_filter_types text/css text/plain text/xml application/json;
+                  sub_filter_once off;
+                  sub_filter ".onion" ".carrot";
+              }
+          }
+      }

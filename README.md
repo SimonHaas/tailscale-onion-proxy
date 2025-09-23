@@ -3,6 +3,7 @@
 This creates a tailscale-tor-proxy through which you can access the tor network.
 
 ``` bash
+cp .env.example .env
 nano .env # add an auth-key from tailscale
 docker compose up -d
 ```

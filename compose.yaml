@@ -1,6 +1,7 @@
 services:
   tor:
-    image: dperson/torproxy
+    #image: dperson/torproxy # deprecated
+    image: ghcr.io/simonhaas/torproxy/torproxy:latest
     restart: unless-stopped
     networks:
       tor_net:

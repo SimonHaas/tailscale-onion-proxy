@@ -45,6 +45,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./carrot.crt:/etc/ssl/carrot.crt:ro
+      - ./carrot.key:/etc/ssl/carrot.key:ro
     network_mode: "service:tailscale"
 
 volumes:

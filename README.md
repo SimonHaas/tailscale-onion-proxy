@@ -40,4 +40,25 @@ There are 4 services:
 3. dns - resolves all .carrot domains to the IP of your tailscale tor-proxy node hosting a nginx reverse proxy
 4. nginx - the reverse proxy that replaces .carrot with .onion in the header and sends the request to tor, in the response from tor occurrences of .onion get replaced with .carrot
 
+## onion ssl
+
+Some hidden service do use https, like 
+- internet archive https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/
+- reddit https://www.reddittorjg6rue252oqsxryoxengawnmo46qy4kyii5wtqnwfj4ooad.onion/
+
+For this nginx also listens to port 443 with a self signed wildcard certificate for *.carrot.
+
+TODO does not work yet, HTTP 307 Temporary Redirect loop
+
+``` bash
+openssl req -x509 -nodes -days 365 \
+ -newkey rsa:2048 \
+ -keyout carrot.key \
+ -out carrot.crt \
+ -config carrot.cnf \
+ -extensions ext
+```
+
+## credit
+
 credits to https://www.reddit.com/user/StatisticianMinute18/ for posting https://www.reddit.com/r/Tailscale/comments/1mm2mwd/access_to_tor_via_tailscale_exit_node_working_100/

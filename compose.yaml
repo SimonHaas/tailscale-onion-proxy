@@ -1,6 +1,5 @@
 services:
   tor:
-    #image: dperson/torproxy # deprecated
     image: ghcr.io/simonhaas/torproxy/torproxy:latest
     restart: unless-stopped
     networks:
@@ -15,9 +14,11 @@ services:
       TS_EXTRA_ARGS: '--accept-dns=false'
       TS_STATE_DIR: /var/lib/tailscale
       TS_HOSTNAME:
+      TS_SERVE_CONFIG: /config/ts-serve.json # TODO supposed to make websocket work
     volumes:
       - tailscale-data:/var/lib/tailscale
       - /dev/net/tun:/dev/net/tun
+      - ./ts-serve.json:/config/ts-serve.json:ro
     cap_add:
       - NET_ADMIN
       - SYS_MODULE
@@ -28,8 +29,6 @@ services:
         ipv4_address: 172.96.1.22
 
   dns:
-    #image: andyshinn/dnsmasq # no arm
-    #image: drpayyne/docker-dnsmasq-multi-arch # multiarch - did not work though
     image: joweisberg/dnsmasq
     restart: unless-stopped
     cap_add:
